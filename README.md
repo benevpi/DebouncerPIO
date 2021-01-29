@@ -1,9 +1,9 @@
 # DebouncerPIO
 A PIO library to debounce input on Raspberry Pi Pico
 
-Not sure if this is a good use of PIO, but it is A use of PIO. Currently only debounces signals that pull low, but a simple change to add pull high signals in there as well. Just need to flip some 0s to 1s. I'll do it if people find it useful.
+This should trigger a callback every time a button is pressed. There are two classes: DebouncerLowPIO and DebouncerHighPIO. The former is for buttons that pull the input low and the latter is for ones that pull the input high. They're initialised with DebouncerLowPIO(statemachine, pin_number, callback). It's possible that callback will be called more than once a button press -- the debouncing isn't perfect. It can probably be optimised.
 
-The timings may need tweaking, and it could probably be made much more robust.
+It will automatically add a pullup/down so you can just wire the button straight into the GPIO. There are also start() and stop() methods should you with to pause the state machine.
 
 You'll need ot copy the DebouncerPIO file to your Pico, then it should work with (for example)
 
