@@ -44,10 +44,6 @@ def debounce_high():
     mov(y, isr)
     jmp(not_y, "skiphigh")
     
-    #let's do as many checks as we can
-    #there's not an obvious way of putting this in a loop, 
-    #but there is a spare scratch register, so perhaps there's an option
-    
     set(y,7)
     
     label("loophigh2")
@@ -58,15 +54,6 @@ def debounce_high():
     jmp(not_y, "skiphigh")
     
     #and once more
-    
-    set(y,7)
-    
-    label("loophigh3")
-    jmp(y_dec, "loophigh3") [10]
-    
-    in_(pins,1)
-    mov(y, isr)
-    jmp(not_y, "skiphigh")
     
     
     irq(block, rel(0))
