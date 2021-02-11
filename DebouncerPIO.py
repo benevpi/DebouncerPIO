@@ -9,23 +9,17 @@ def debounce_low():
     set(y,7)
     label("loop")
     jmp(y_dec, "loop") [10]
-    in_(pins,1) 
-    mov(isr, y)
-    jmp(y, "skip")
+    jmp(pin, "skip")
     
     set(y,7)
     label("loop2")
     jmp(y_dec, "loop2") [10]
-    in_(pins,1) 
-    mov(isr, y)
-    jmp(y, "skip")
+    jmp(pin, "skip")
     
     set(y,7)
     label("loop3")
     jmp(y_dec, "loop3") [10]
-    in_(pins,1) 
-    mov(isr, y)
-    jmp(y, "skip")
+    jmp(pin, "skip")
     
     irq(block, rel(0))
     wait(1, pin, 0)
@@ -53,9 +47,6 @@ def debounce_high():
     mov(y, isr)
     jmp(not_y, "skiphigh")
     
-    #and once more
-    
-    
     irq(block, rel(0))
     
     wait(0, pin, 0)
@@ -66,7 +57,7 @@ class DebouncerLowPIO:
     
     def __init__(self, statemachine, pin_number, handler):
         self.pin = Pin(pin_number, Pin.IN, Pin.PULL_UP)
-        self.sm  = rp2.StateMachine(statemachine, debounce_low, in_base=self.pin, freq=2000)
+        self.sm  = rp2.StateMachine(statemachine, debounce_low, in_base=self.pin, jmp_pin=self.pin, freq=2000)
         self.sm.irq(handler)
         self.sm.active(1)
         
