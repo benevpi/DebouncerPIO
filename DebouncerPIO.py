@@ -24,6 +24,7 @@ def debounce_low():
     irq(block, rel(0))
     wait(1, pin, 0)
     label("skip") #no idea why this isn't triggering the not-wrapping bug that debounce-high is
+    set(y,1) # just a test -- doesn't work if removed. looks like it's not wrapping
     
 @rp2.asm_pio()
 def debounce_high():
@@ -57,7 +58,7 @@ class DebouncerLowPIO:
     
     def __init__(self, statemachine, pin_number, handler):
         self.pin = Pin(pin_number, Pin.IN, Pin.PULL_UP)
-        self.sm  = rp2.StateMachine(statemachine, debounce_low, in_base=self.pin, jmp_pin=self.pin, freq=2000)
+        self.sm  = rp2.StateMachine(statemachine, debounce_low, in_base=self.pin, jmp_pin=self.pin, freq=4000)
         self.sm.irq(handler)
         self.sm.active(1)
         
